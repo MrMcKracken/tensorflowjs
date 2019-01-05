@@ -26,16 +26,17 @@ function draw(){
 
     }
     const shape = [500,300];
+    
+    // tedious way
+    const tensorY = tf.tensor2d(values, shape,'int32');
+    tensorY.dispose();
+    
+    tf.tidy(() => {
     const tensorA = tf.tensor2d(values, shape,'int32');
     const tensorB = tf.tensor2d(values, shape,'int32');
     const tensorBTrans = tensorB.transpose();
     const tensorC=tensorA.matMul(tensorBTrans);
-
-//    tedious way...
-//    tensorA.dispose();
-//    tensorB.dispose();
-//    tensorC.dispose();
-//    tensorBTrans.dispose();
+    });
     
     console.log(tf.memory().numTensors);
     
