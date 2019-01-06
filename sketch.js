@@ -14,21 +14,28 @@ function callLayersApi(){
     const model = tf.sequential();
     
     //    Hidden Layer
-    const configHidden = {
+    const hidden = tf.layers.dense({
         units: 4,
         inputShape: [2],
         activation: 'sigmoid',
-    }
-    const hidden = tf.layers.dense(configHidden);    
+    });    
 
     //    Output Layer
-    const configOutput = {
+    const output = tf.layers.dense({
         units: 3,
         activation: 'sigmoid',
-    }
-    const output = tf.layers.dense( configOutput);
+    });
     
     model.add(hidden);
     model.add(output);
+    
+    const sgdOptimizer = tf.train.sgd(0.1);
+        
+    const config = {
+        optimizer: sgdOptimizer,
+        loss: 'm eanSquaredError'
+    }
+    model.compile(config);
+    
     console.log(model);
 }
