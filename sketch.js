@@ -6,38 +6,29 @@ function getTime(){
                 + currentdate.getSeconds()+"s]";
 }
 
+callLayersApi();
 
-function setup() {
-    noCanvas();
-//    frameRate(1);
-}
-
-tf.tidy(myFunc);
-
-function myFunc(){
+function callLayersApi(){
+    console.log(getTime()+" Start Layers");
     
-}
-
-function draw(){
-    const values = [];
-    console.log(getTime()+" Start");
-    for (let i = 0; i<150000; i++){
-        values[i]= random(0,100);
-
+    const model = tf.sequential();
+    
+    //    Hidden Layer
+    const configHidden = {
+        units: 4,
+        inputShape: [2],
+        activation: 'sigmoid',
     }
-    const shape = [500,300];
+    const hidden = tf.layers.dense(configHidden);    
+
+    //    Output Layer
+    const configOutput = {
+        units: 3,
+        activation: 'sigmoid',
+    }
+    const output = tf.layers.dense( configOutput);
     
-    // tedious way
-    const tensorY = tf.tensor2d(values, shape,'int32');
-    tensorY.dispose();
-    
-    tf.tidy(() => {
-    const tensorA = tf.tensor2d(values, shape,'int32');
-    const tensorB = tf.tensor2d(values, shape,'int32');
-    const tensorBTrans = tensorB.transpose();
-    const tensorC=tensorA.matMul(tensorBTrans);
-    });
-    
-    console.log(tf.memory().numTensors);
-    
+    model.add(hidden);
+    model.add(output);
+    console.log(model);
 }
